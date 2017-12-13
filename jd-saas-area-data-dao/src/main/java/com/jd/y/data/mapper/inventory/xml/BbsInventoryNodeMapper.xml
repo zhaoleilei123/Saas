@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.y.data.mapper.area.BbsInventoryNodeMapper" >
+  <resultMap id="BaseResultMap" type="com.jd.y.data.domain.inventory.BbsInventoryNode" >
+    <id column="pk_inventory_node" property="pkInventoryNode" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pk_org" property="pkOrg" jdbcType="INTEGER" />
+    <result column="replenishment_type" property="replenishmentType" jdbcType="BIT" />
+    <result column="pk_org_dept" property="pkOrgDept" jdbcType="BIGINT" />
+    <result column="capacity" property="capacity" jdbcType="DOUBLE" />
+    <result column="isonline" property="isonline" jdbcType="BIT" />
+    <result column="ownsubject" property="ownsubject" jdbcType="BIGINT" />
+    <result column="code_level1" property="codeLevel1" jdbcType="BIGINT" />
+    <result column="code_level2" property="codeLevel2" jdbcType="BIGINT" />
+    <result column="code_level3" property="codeLevel3" jdbcType="BIGINT" />
+    <result column="code_level4" property="codeLevel4" jdbcType="BIGINT" />
+    <result column="code_level5" property="codeLevel5" jdbcType="BIGINT" />
+    <result column="full_address" property="fullAddress" jdbcType="VARCHAR" />
+    <result column="detail_address" property="detailAddress" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="DOUBLE" />
+    <result column="lng" property="lng" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.jd.y.data.domain.inventory.BbsInventoryNetWorkPath" >
+    <id column="pk_inventory_network_path" property="pkInventoryNetworkPath" jdbcType="BIGINT" />
+    <result column="from_node" property="fromNode" jdbcType="BIGINT" />
+    <result column="from_tenant" property="fromTenant" jdbcType="BIGINT" />
+    <result column="to_node" property="toNode" jdbcType="BIGINT" />
+    <result column="to_tenant" property="toTenant" jdbcType="BIGINT" />
+    <result column="leadtime" property="leadtime" jdbcType="DOUBLE" />
+    <result column="distance" property="distance" jdbcType="DOUBLE" />
+    <result column="transport_capacity" property="transportCapacity" jdbcType="DOUBLE" />
+  </resultMap>
+  <select id="queryInventory" resultType="java.util.HashMap" parameterType="com.jd.y.data.mapper.area.BbsInventoryNodeMapper">
+  	SELECT * FROM BBS_INVENTORY_NODE WHERE PK_INVENTORY_NODE = #{pkInventoryNode}
+  </select>
+ <insert id="insert" parameterType="com.jd.y.data.domain.areas.BbsInventoryNode" >
+    insert into bbs_inventory_node (pk_inventory_node, name, pk_org, 
+      replenishment_type, pk_org_dept, capacity, 
+      isonline, ownsubject, code_level1, 
+      code_level2, code_level3, code_level4, 
+      code_level5, full_address, detail_address, 
+      lat, lng)
+    values (#{pkInventoryNode,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{pkOrg,jdbcType=INTEGER}, 
+      #{replenishmentType,jdbcType=BIT}, #{pkOrgDept,jdbcType=BIGINT}, #{capacity,jdbcType=DOUBLE}, 
+      #{isonline,jdbcType=BIT}, #{ownsubject,jdbcType=BIGINT}, #{codeLevel1,jdbcType=BIGINT}, 
+      #{codeLevel2,jdbcType=BIGINT}, #{codeLevel3,jdbcType=BIGINT}, #{codeLevel4,jdbcType=BIGINT}, 
+      #{codeLevel5,jdbcType=BIGINT}, #{fullAddress,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR}, 
+      #{lat,jdbcType=DOUBLE}, #{lng,jdbcType=DOUBLE})
+  </insert> 
+   
+  <update id="updateByPrimaryKey" parameterType="com.jd.y.data.domain.areas.BbsInventoryNode" >
+    update bbs_inventory_node
+    set name = #{name,jdbcType=VARCHAR},
+      pk_org = #{pkOrg,jdbcType=INTEGER},
+      replenishment_type = #{replenishmentType,jdbcType=BIT},
+      pk_org_dept = #{pkOrgDept,jdbcType=BIGINT},
+      capacity = #{capacity,jdbcType=DOUBLE},
+      isonline = #{isonline,jdbcType=BIT},
+      ownsubject = #{ownsubject,jdbcType=BIGINT},
+      code_level1 = #{codeLevel1,jdbcType=BIGINT},
+      code_level2 = #{codeLevel2,jdbcType=BIGINT},
+      code_level3 = #{codeLevel3,jdbcType=BIGINT},
+      code_level4 = #{codeLevel4,jdbcType=BIGINT},
+      code_level5 = #{codeLevel5,jdbcType=BIGINT},
+      full_address = #{fullAddress,jdbcType=VARCHAR},
+      detail_address = #{detailAddress,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=DOUBLE},
+      lng = #{lng,jdbcType=DOUBLE}
+    where pk_inventory_node = #{pkInventoryNode,jdbcType=BIGINT}
+  </update>
+</mapper>

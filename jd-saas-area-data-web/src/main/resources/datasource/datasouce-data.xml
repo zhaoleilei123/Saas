@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xsi:schemaLocation="   
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+	
+	<!-- dataSource -->
+	<bean id="parentDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<!-- property name="jdbcUrl" value="jdbc:mysql://192.168.229.94:3306/ocs" / -->
+		<property name="user" value="${db_orderamount.username}" />
+		<property name="password" value="${db_orderamount.password}" />
+		
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="20" />
+		<property name="maxIdleTime" value="300" />
+		<property name="acquireIncrement" value="2" />
+		<property name="maxStatements" value="1000" />
+		<property name="initialPoolSize" value="2" />
+		<property name="idleConnectionTestPeriod" value="240" />
+		<property name="acquireRetryAttempts" value="30" />
+	</bean>
+	 <bean id="dataSource_0" parent="parentDataSource" >
+		<property name="jdbcUrl" value="${db_orderamount0.url}" />
+	</bean>
+	
+	<bean id="orderAmountSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+		<property name="dataSource" ref="dataSource_0" />
+		<property name="typeAliasesPackage" value="com.jd.y.data.domain" />
+		<property name="mapperLocations" value="classpath*:com/jd/y/data/mapper/area/**/*.xml"/>
+		<property name="configLocation" value="classpath:mybatis.xml"/>
+	</bean> 
+
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<!-- 支持  @Transactional 标记  -->
+    <bean id="areaTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource_0" />
+		<qualifier value="orderAmount"/>
+    </bean>
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.jd.y.data.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="orderAmountSqlSessionFactory" />
+	</bean>
+	
+</beans>

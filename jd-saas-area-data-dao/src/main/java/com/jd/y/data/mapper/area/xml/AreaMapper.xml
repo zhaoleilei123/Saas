@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jd.y.data.mapper.area.AreaMapper">
+	 <resultMap type="com.jd.y.data.domain.areas.BbsAreas" id="retrunBbsAreas">
+		<id     column="pk_Area" property="pkArea"></id>
+		<result column="code" property="code"></result>
+		<result column="name" property="name"></result>
+		<result column="alias" property="alias"></result>
+		<result column="name_en_us" property="nameEnUs"></result>
+		<result column="postal_code" property="postalCode"></result>
+		<result column="parent_id" property="parentId"></result>
+		<result column="layer" property="layer"></result>
+		<result column="pk_region" property="pkRegion"></result>
+		<result column="pk_area_type" property="pkAreaType"></result>
+	</resultMap>
+	 <resultMap type="com.jd.y.data.domain.areas.BbsAreaType" id="returnBbsAreaType">
+		<id column="pk_area_type" property="pkAreaType"></id>
+		<result column="pk_region" property="pkRegion"></result>
+		<result column="layer" property="layer"></result>
+		<result column="name" property="name"></result>
+		<result column="name_en_us" property="nameEnUs"></result>
+	</resultMap>
+	 <resultMap type="com.jd.y.data.domain.areas.BbsRegion" id="returnBbsRegion">
+		<id column="pk_region" property="pkRegion"></id>
+		<result column="code" property="code"></result>
+		<result column="name" property="name"></result>
+		<result column="alias" property="alias"></result>
+		<result column="name_en_us" property="nameEnUs"></result>
+		<result column="alias_en_us" property="aliasEnUs"></result>
+	</resultMap>
+
+	<select id="queryBbsArea"  resultType="java.util.HashMap">
+		SELECT * FROM BBS_AREA AS AR LEFT JOIN BBS_AREA_TYPE AS TY ON AR.PK_AREA_TYPE=TY.PK_AREA_TYPE LEFT JOIN BBS_REGION AS RE ON AR.PK_REGION=RE.PK_REGION
+	</select>
+	<select id="queryAllAreasById"  resultType="java.util.HashMap" parameterType="java.lang.Integer">
+		SELECT * FROM BBS_AREA AS AR LEFT JOIN BBS_AREA_TYPE AS TY ON AR.PK_AREA_TYPE=TY.PK_AREA_TYPE LEFT JOIN BBS_REGION AS RE ON AR.PK_REGION=RE.PK_REGION WHERE  AR.CODE = #{ID}
+	</select>
+	 <insert id="insertAreas" useGeneratedKeys="true"    parameterType="com.jd.y.data.domain.areas.BbsAreas">
+	 	  INSERT INTO BBS_AREA 
+	        (
+	        CODE,NAME,ALIAS,NAME_EN_US,POSTAL_CODE,PARENT_ID,LAYER,PK_REGION,PK_AREA_TYPE
+	        )
+	        VALUES
+	        ( #{code}, #{name},#{alias},#{nameEnUs},#{postalCode},#{parentId},#{layer},#{pkRegion},#{pkAreaType})
+	 </insert>
+	 <delete id="deleteAreaId"   parameterType="java.lang.Integer">
+	 	delete from BBS_AREA where pk_Area = #{id}
+	 </delete>
+	 <update id="updateAreasById"  parameterType="com.jd.y.data.domain.areas.BbsAreas">
+	 	update BBS_AREA set CODE=#{code},NAME=#{name},ALIAS=#{alias},NAME_EN_US=#{nameEnUs},POSTAL_CODE=#{postalCode},
+	 	PARENT_ID=#{parentId},LAYER=#{layer},PK_REGION=#{pkRegion},PK_AREA_TYPE=#{pkAreaType} where pk_Area =#{pkArea}
+	 </update>
+</mapper>
